@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Merge</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js" defer></script>
+  </head>
+  <body>
+    <h1>Merge PDF files</h1>
+    <p>
+      Combine PDFs in the order you want with the easiest PDF merger available.
+    </p>
+    <section class="uploadSection">
+      <form action="/merge" method="post" enctype="multipart/form-data">
+        <input
+          type="file"
+          name="pdfs"
+          multiple
+          accept=".pdf"
+          required
+          hidden
+          id="fileUpload"
+        />
+        <label for="fileUpload" class="btn">Choose files</label>
+
+        <input type="submit" value="Submit" class="btn" />
+      </form>
+
+      <div class="selectedFiles">
+        <p>maximum of 2 files</p>
+      </div>
+    </section>
+  </body>
+</html>
