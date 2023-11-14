@@ -11,7 +11,7 @@ app.use(express.static("./public"));
 app.post(
   "/merge",
   upload.array("pdfs", 2),
-  async (req, res, next)=> {
+  async (req, res)=> {
 
         console.log(req.files);
         let d = await mergePdfs(
@@ -19,29 +19,37 @@ app.post(
           path.join(__dirname, req.files[1].path)
         );
 
-
-        await fs.unlink(req.files[0].path, (err) => {
+        fs.unlink(req.files[0].path, (err) => {
           if (err) {
             console.error("Error deleting the file:", err);
           } else {
             console.log("File deleted successfully.");
           }
         });
-        await fs.unlink(req.files[1].path, (err) => {
+        fs.unlink(req.files[1].path, (err) => {
           if (err) {
             console.error("Error deleting the file:", err);
           } else {
             console.log("File deleted successfully.");
-          }
+          } 
         });
 
       res.sendFile(path.join(__dirname,`mergedPdfs/${d}.pdf`))
- 
+      
+      res.on("finish", () => {
+        fs.unlink(path.join(__dirname, `mergedPdfs/${d}.pdf`), (err) => {
+          if (err) {
+            console.error("Error deleting the file:", err);
+          } else {
+            console.log("File deleted successfully.");
+          }
+        });
+      });
   }
 );
 
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=>{
-    console.log(`Server,started in port ${PORT}`)
+    console.log(`Server started in port ${PORT}`)
 })
